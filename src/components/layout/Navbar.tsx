@@ -1,4 +1,4 @@
-import { LogOut, Plus } from "lucide-react";
+import { LogOut, Video } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -7,14 +7,20 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { logout } from "@/services/auth.api";
 import { Button } from "@/components/ui/button";
 import { NavLink } from "react-router";
-import Logo from "@/assets/Logo";
 import { useUser } from "@/hooks/user";
+import Logo from "@/assets/Logo";
 
 const Navbar = () => {
     const { user, setIsLoading } = useUser();
+    // console.log(user)
+
+    const handleLogout = () => {
+        logout();
+        setIsLoading(true);
+    };
 
     return (
         <header className="border-b-2 border-white/20 w-full">
@@ -27,51 +33,46 @@ const Navbar = () => {
                 <nav className="flex gap-2 items-center">
                     {user ? (
                         <>
+                            <NavLink to="/video/upload">
+                                <Button className="rounded">
+                                    <Video />
+                                    Upload Reel
+                                </Button>
+                            </NavLink>
                             <DropdownMenu>
                                 <DropdownMenuTrigger>
-                                    <Avatar>
-                                        <AvatarImage
-                                            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                                            alt="@shadcn"
-                                        />
-                                    </Avatar>
+                                    <Button variant="link" className="text-white">
+                                        {user?.email}
+                                    </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
-                                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                    <DropdownMenuLabel>Account</DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem>
-                                        <NavLink to="/profile">Profile</NavLink>
+                                        <NavLink to="/profile">View Profile</NavLink>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem
                                         className="bg-red-500 cursor-pointer"
+                                        onClick={handleLogout}
                                     >
                                         <LogOut />
-                                        <span>Log out</span>
+                                        <span>Sign Out</span>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
 
-                            <NavLink to="/reel/upload">
-                                <Button className="rounded-full">
-                                    <Plus />
-                                    Upload
-                                </Button>
-                            </NavLink>
+
                         </>
                     ) : (
-                        <>
-                            <NavLink to="/login">
-                                <Button className="rounded">Login</Button>
-                            </NavLink>
-                            <NavLink to="/register">
-                                <Button className="rounded">Register</Button>
-                            </NavLink>
-                        </>
+                        <NavLink to="/login">
+                            <Button className="rounded-full">Sign In</Button>
+                        </NavLink>
                     )}
                 </nav>
             </div>
         </header>
+
     );
 };
 
