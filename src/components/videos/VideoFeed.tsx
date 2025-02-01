@@ -2,7 +2,7 @@ import { IVideo } from "@/types";
 import { NavLink } from "react-router";
 import VideoPlayer from "./VideoPlayer";
 import { useState } from "react";
-import { User } from "lucide-react";
+import { Eye, Heart, User } from "lucide-react";
 
 const VideoFeed = ({ videosData }: { videosData: IVideo[] }) => {
   const [hoveredVideo, setHoveredVideo] = useState<string | null>(null);
@@ -34,8 +34,18 @@ const VideoFeed = ({ videosData }: { videosData: IVideo[] }) => {
                   className="w-full h-auto rounded-lg object-cover"
                 />
                 {/* Title Overlay */}
-                <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-60 text-white text-sm font-semibold p-2 text-center rounded-b-lg">
-                  {videoInfo?.title}
+                <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-60 text-white text-sm font-semibold p-2 text-center rounded-b-lg flex justify-between items-center px-3">
+                  <span className="truncate">{videoInfo?.title}</span>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1">
+                      <Eye className="w-4 h-4 text-gray-300" />
+                      <span>{videoInfo?.viewCount}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Heart className="w-4 h-4 text-red-400" />
+                      <span>{videoInfo?.likeCount}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}

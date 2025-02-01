@@ -65,7 +65,7 @@ export const likeUnlike = async (VideoId: string) => {
     }
 
     const res = await axios.post(
-      `${import.meta.env.VITE_BASE_API}/video/upload/${VideoId}`,
+      `${import.meta.env.VITE_BASE_API}/video/${VideoId}`,
       {},
       {
         headers: {
