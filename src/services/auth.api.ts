@@ -63,3 +63,23 @@ export const getCurrentUser = () => {
     return null;
   }
 };
+
+
+// get all Videos
+export const getMyProfile = async () => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  try {
+    const res = await axios.get(
+      `${import.meta.env.VITE_BASE_API}/auth/me`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    return res; // Return API response data
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Failed to fetch Profile");
+  }
+};

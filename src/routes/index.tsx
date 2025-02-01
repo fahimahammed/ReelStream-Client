@@ -5,6 +5,7 @@ import Register from "@/pages/Register";
 import Login from "@/pages/Login";
 import ProfilePage from "@/pages/Profile";
 import UploadVideo from "@/pages/UploadVideo";
+import ProtectedRoute from "@/components/layout/ProtectedRoute";
 
 const Routers = () => {
     return (
@@ -16,13 +17,17 @@ const Routers = () => {
                 <Route
                     path="/profile"
                     element={
-                        <ProfilePage />
+                        <ProtectedRoute>
+                            <ProfilePage />
+                        </ProtectedRoute>
                     }
                 />
                 <Route
                     path="/video/upload"
                     element={
-                        <UploadVideo />
+                        <ProtectedRoute>
+                            <UploadVideo />
+                        </ProtectedRoute>
                     }
                 />
             </Route>
