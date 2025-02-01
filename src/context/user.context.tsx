@@ -7,8 +7,8 @@ import {
   useState,
 } from "react";
 
-import { IUser } from "@/types";
 import { getCurrentUser } from "@/services/auth.api";
+import { IUser } from "@/types/user";
 
 interface IUserProviderValues {
   user: IUser | null;
