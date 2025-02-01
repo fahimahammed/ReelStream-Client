@@ -1,12 +1,9 @@
-import React from "react";
-import UploadPage from "./pages/UploadPage";
-
-const App: React.FC = () => {
+function App() {
   return (
-    <div>
-      <UploadPage />
-    </div>
+    <>
+      <h1>Hello ReelStream</h1>
+    </>
   );
-};
+}
 
 export default App;
