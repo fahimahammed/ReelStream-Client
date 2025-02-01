@@ -33,7 +33,7 @@ const ActionButtons = ({ data }: TVideoProps) => {
   const handleActionButtons = async (id: string | undefined) => {
     if (!id) return;
 
-    navigate(`/videos/${id}`, { replace: true });
+    navigate(`/video/${id}`, { replace: true });
   };
 
   return (

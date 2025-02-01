@@ -47,7 +47,7 @@ export const getAllVideos = async (page: number = 1, limit: number = 10) => {
 export const getVideoById = async (VideoId: string) => {
   try {
     const res = await axios.get(
-      `${import.meta.env.VITE_BASE_API}/video/upload/${VideoId}`
+      `${import.meta.env.VITE_BASE_API}/video/${VideoId}`
     );
     return res.data;
   } catch (error: any) {

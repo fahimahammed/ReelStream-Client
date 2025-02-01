@@ -8,9 +8,11 @@ import VideoPlayer from "@/components/videos/VideoPlayer";
 
 const Video = () => {
   const { videoId } = useParams();
+  console.log("---------->>", videoId)
   const queryClient = useQueryClient();
 
   const { data, isLoading, refetch } = useVideo(videoId!);
+  console.log({ data })
 
   useEffect(() => {
     if (videoId) {
@@ -27,15 +29,15 @@ const Video = () => {
     );
 
   const {
-    data: { video },
+    data: videoData
   } = data;
 
   return (
     <div className="w-full md:w-[37%] lg:w-[37%] px-8 md:px-0 lg:px-0 mx-auto my-5 md:flex justify-center gap-2 relative">
       <div className="h-screen md:h-[83vh] w-full md:w-3/5 flex flex-col items-center justify-center relative">
-        <VideoPlayer videoInfo={video} />
+        <VideoPlayer videoInfo={videoData.video} />
       </div>
-      <ActionButtons data={data?.data} />
+      <ActionButtons data={data.data} />
     </div>
   );
 };

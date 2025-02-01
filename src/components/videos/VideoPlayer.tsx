@@ -12,7 +12,7 @@ type TVideoPlayerProps = {
 
 const VideoPlayer = ({
   videoInfo,
-  autoPlay = false,
+  autoPlay = true,
   muted = false,
   loop = false,
   controls = true,

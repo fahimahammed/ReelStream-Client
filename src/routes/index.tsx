@@ -6,6 +6,7 @@ import Login from "@/pages/Login";
 import ProfilePage from "@/pages/Profile";
 import UploadVideo from "@/pages/UploadVideo";
 import ProtectedRoute from "@/components/layout/ProtectedRoute";
+import Video from "@/pages/Video";
 
 const Routers = () => {
     return (
@@ -31,6 +32,7 @@ const Routers = () => {
                     }
                 />
             </Route>
+            <Route path="/video/:videoId" element={<Video />} />
         </Routes>
     );
 };
