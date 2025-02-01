@@ -32,7 +32,6 @@ export default function Register() {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log("Form Submitted", data);
     try {
       const res = await registerUser(data);
       if (res.success) {
@@ -43,6 +42,7 @@ export default function Register() {
       }
     } catch (err: any) {
       console.error(err);
+      toast.error(err.message);
     }
   };
 
