@@ -55,14 +55,19 @@ const Navbar = () => {
                             <NavLink to="/reel/upload">
                                 <Button className="rounded-full">
                                     <Plus />
-                                    Create
+                                    Upload
                                 </Button>
                             </NavLink>
                         </>
                     ) : (
-                        <NavLink to="/login">
-                            <Button className="rounded-full">Login</Button>
-                        </NavLink>
+                        <>
+                            <NavLink to="/login">
+                                <Button className="rounded">Login</Button>
+                            </NavLink>
+                            <NavLink to="/register">
+                                <Button className="rounded">Register</Button>
+                            </NavLink>
+                        </>
                     )}
                 </nav>
             </div>
