@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//upload reel video
-export const uploadReel = async (data: FormData) => {
+//upload Video video
+export const uploadVideo = async (data: FormData) => {
   const accessToken = localStorage.getItem("accessToken");
 
   if (!accessToken) {
@@ -23,13 +23,13 @@ export const uploadReel = async (data: FormData) => {
   } catch (error: any) {
     throw new Error(
       error.response?.data?.message ||
-        `Failed to upload reels: ${error.message}`
+      `Failed to upload Videos: ${error.message}`
     );
   }
 };
 
-// get all reels
-export const getAllReels = async (page: number = 1, limit: number = 10) => {
+// get all Videos
+export const getAllVideos = async (page: number = 1, limit: number = 10) => {
   try {
     const res = await axios.get(
       `${import.meta.env.VITE_BASE_API}/video/upload`,
@@ -39,24 +39,24 @@ export const getAllReels = async (page: number = 1, limit: number = 10) => {
     );
     return res.data; // Return API response data
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to fetch reels");
+    throw new Error(error.response?.data?.message || "Failed to fetch Videos");
   }
 };
 
-// get single reel by id
-export const getReelById = async (reelId: string) => {
+// get single Video by id
+export const getVideoById = async (VideoId: string) => {
   try {
     const res = await axios.get(
-      `${import.meta.env.VITE_BASE_API}/video/upload/${reelId}`
+      `${import.meta.env.VITE_BASE_API}/video/upload/${VideoId}`
     );
     return res.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to fetch reel");
+    throw new Error(error.response?.data?.message || "Failed to fetch Video");
   }
 };
 
 // handle like unlike
-export const likeUnlike = async (reelId: string) => {
+export const likeUnlike = async (VideoId: string) => {
   try {
     const accessToken = localStorage.getItem("accessToken");
 
@@ -65,7 +65,7 @@ export const likeUnlike = async (reelId: string) => {
     }
 
     const res = await axios.post(
-      `${import.meta.env.VITE_BASE_API}/video/upload/${reelId}`,
+      `${import.meta.env.VITE_BASE_API}/video/upload/${VideoId}`,
       {},
       {
         headers: {
@@ -77,7 +77,7 @@ export const likeUnlike = async (reelId: string) => {
     return res.data;
   } catch (error: any) {
     throw new Error(
-      error.response?.data?.message || "Failed to like/unlike reel."
+      error.response?.data?.message || "Failed to like/unlike Video."
     );
   }
 };
