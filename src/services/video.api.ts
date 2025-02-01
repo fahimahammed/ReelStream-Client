@@ -32,12 +32,12 @@ export const uploadVideo = async (data: FormData) => {
 export const getAllVideos = async (page: number = 1, limit: number = 10) => {
   try {
     const res = await axios.get(
-      `${import.meta.env.VITE_BASE_API}/video/upload`,
+      `${import.meta.env.VITE_BASE_API}/video/`,
       {
         params: { page, limit },
       }
     );
-    return res.data; // Return API response data
+    return res; // Return API response data
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Failed to fetch Videos");
   }

@@ -1,53 +1,53 @@
-import { IReel } from "@/types";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import ReelsFeed from "./ReelsFeed";
 import Spinner from "../ui/spinner";
 import { delay } from "@/helpers/delay";
-import { getAllReels } from "@/services/reel.api";
+import { IVideo } from "@/types";
+import { getAllVideos } from "@/services/video.api";
+import VideoFeed from "./VideoFeed";
 
 const LoadMore = () => {
-  const [reels, setReels] = useState<IReel[]>([]);
+  const [videos, setVideos] = useState<IVideo[]>([]);
   const [pagesLoaded, setPagesLoaded] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const { ref, inView } = useInView();
 
-  const loadMoreReels = async () => {
+  const loadMoreVideos = async () => {
     if (!hasMore) return;
 
     await delay(200);
     const nextPage = pagesLoaded + 1;
     try {
-      const response = await getAllReels(nextPage, 4);
+      const response = await getAllVideos(nextPage, 4);
 
-      const newReels = response?.data?.data || [];
+      const newVideos = response?.data?.data || [];
 
-      if (newReels.length === 0) {
+      if (newVideos.length === 0) {
         setHasMore(false);
       } else {
-        setReels((prevReels) => [...prevReels, ...newReels]);
+        setVideos((prevVideos) => [...prevVideos, ...newVideos]);
         setPagesLoaded(nextPage);
       }
     } catch (error) {
-      console.error("Error loading reels:", error);
+      console.error("Error loading videos:", error);
       setHasMore(false);
     }
   };
 
   useEffect(() => {
     if (inView && hasMore) {
-      loadMoreReels();
+      loadMoreVideos();
     }
   }, [inView]);
 
   return (
     <div className="container mx-auto">
-      <ReelsFeed videosData={reels} />
+      <VideoFeed videosData={videos} />
       <div className="flex justify-center items-center mt-4" ref={ref}>
         {hasMore ? (
           <Spinner />
         ) : (
-          <p className="text-white/60 my-3">No more reels to load.</p>
+          <p className="text-white/60 my-3">No more videos to load.</p>
         )}
       </div>
     </div>
