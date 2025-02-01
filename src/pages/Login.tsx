@@ -46,6 +46,7 @@ export default function Login() {
       }
     } catch (err: any) {
       console.error(err);
+      toast.error(err.message);
     }
   };
 

@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import {
   Form,
+  FormItem,
+  FormMessage,
+  FormLabel,
   FormControl,
   FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
+import regImage from "@/assets/reg.webp";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -17,12 +18,12 @@ import { NavLink, useNavigate } from "react-router";
 import { registerValidationSchema } from "@/schema/register.validation";
 import Logo from "@/assets/Logo";
 import { registerUser } from "@/services/auth.api";
-import regImage from "@/assets/reg.webp";
 
 export default function Register() {
   const form = useForm({
     resolver: zodResolver(registerValidationSchema),
   });
+
   const {
     formState: { isSubmitting },
   } = form || {};
@@ -30,14 +31,10 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const password = form.watch("password");
-  const passwordConfirm = form.watch("passwordConfirm");
-
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    delete data["passwordConfirm"];
+    console.log("Form Submitted", data);
     try {
       const res = await registerUser(data);
-
       if (res.success) {
         toast.success(res.message);
         navigate("/login");
@@ -142,13 +139,12 @@ export default function Register() {
                 </FormItem>
               )}
             />
-
             <Button
-              disabled={passwordConfirm && password !== passwordConfirm}
               type="submit"
               className="mt-5 w-full"
+              disabled={isSubmitting}
             >
-              {isSubmitting ? "Processing....." : "Register"}
+              {isSubmitting ? "Processing..." : "Register"}
             </Button>
           </form>
         </Form>

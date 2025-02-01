@@ -5,6 +5,10 @@ export const registerValidationSchema = z.object({
     .string({ required_error: "Name is required" })
     .min(5, "Name must be between 2 and 50 characters")
     .max(50, "Name must be between 2 and 50 characters"),
+  username: z
+    .string({ required_error: "Name is required" })
+    .min(5, "Name must be between 2 and 50 characters")
+    .max(50, "Name must be between 2 and 50 characters"),
   email: z
     .string({ required_error: "Email is required" })
     .email("Invalid email address"),
@@ -15,8 +19,5 @@ export const registerValidationSchema = z.object({
     .regex(
       /[!@#$%^&*(),.?":{}|<>]/,
       "Password must contain at least one special character"
-    ),
-  passwordConfirm: z
-    .string({ required_error: "Password Confirmation is required" })
-    .min(1),
+    )
 });
