@@ -17,6 +17,7 @@ type TVideoProps = {
 const ActionButtons = ({ data }: TVideoProps) => {
   const { user } = useUser();
   const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(data?.video?.likeCount || 0)
   const navigate = useNavigate();
 
   const handleLike = async () => {
@@ -24,7 +25,9 @@ const ActionButtons = ({ data }: TVideoProps) => {
       const res = await likeUnlike(data?.video?.id);
       if (res) {
         setLiked(!liked);
+        setLikeCount(res.data.likeCount)
       }
+
     } catch (err) {
       console.error(err);
     }
@@ -74,7 +77,7 @@ const ActionButtons = ({ data }: TVideoProps) => {
 
         <div className="flex items-center gap-1 text-white text-sm font-semibold my-1">
           <ThumbsUp className="w-4 h-4 text-gray-300" />
-          {data?.video?.likeCount || 0}
+          {likeCount}
         </div>
         <div className="flex items-center gap-1 text-white text-sm font-semibold">
           <Eye className="w-4 h-4 text-gray-300" />

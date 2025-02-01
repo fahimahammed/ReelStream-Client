@@ -35,7 +35,7 @@ const Video = () => {
   return (
     <div className="relative w-full md:w-[37%] lg:w-[37%] px-8 md:px-0 lg:px-0 mx-auto my-5 md:flex justify-center gap-2 relative">
       <div className="h-screen md:h-[83vh] w-full md:w-3/5 flex flex-col items-center justify-center relative">
-        <VideoPlayer videoInfo={videoData.video} />
+        <VideoPlayer videoInfo={videoData.video} autoPlay={true} />
       </div>
       <ActionButtons data={data.data} />
     </div>
