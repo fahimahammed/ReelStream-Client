@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, Heart, Upload, LineChart } from "lucide-react";
+import { Eye, Heart, Upload, LineChart, ThumbsUp } from "lucide-react";
 import Spinner from "../ui/spinner";
 import { useAnalytics } from "@/hooks/analytics";
 
@@ -43,7 +43,7 @@ const Analytics = () => {
     },
     {
       label: "Engagement Rate",
-      value: `${engagementRate}%`,
+      value: `${engagementRate.toFixed(2)}%`,
       icon: <LineChart className="w-6 h-6 text-purple-500" />,
     },
   ];
@@ -78,8 +78,16 @@ const Analytics = () => {
                   <CardTitle className="text-lg">{video.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-gray-500">Views: {video.viewCount}</p>
-                  <p className="text-sm text-gray-500">Likes: {video.likeCount}</p>
+                  <div className="flex flex-col items-center">
+                    <div className="flex items-center gap-2">
+                      <Eye className="w-4 h-4 text-gray-500" />
+                      <p className="text-sm text-gray-500">{video.viewCount} Views</p>
+                    </div>
+                    <div className="flex items-center gap-2 mt-2">
+                      <ThumbsUp className="w-4 h-4 text-gray-500" />
+                      <p className="text-sm text-gray-500">{video.likeCount} Likes</p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             ))}

@@ -42,7 +42,7 @@ const Navbar = () => {
                             <DropdownMenu>
                                 <DropdownMenuTrigger>
                                     <Button variant="link" className="text-white">
-                                        {user?.email}
+                                        {user?.username}
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
