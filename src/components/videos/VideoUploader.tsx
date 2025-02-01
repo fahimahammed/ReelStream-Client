@@ -1,33 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
-import { UploadCloud, X } from "lucide-react";
+import { Upload, X } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { uploadVideo } from "@/services/video.api";
+import io from "socket.io-client";
+import { useUser } from "@/hooks/user";
 
 const MAX_SIZE_MB = 50;
 const MAX_DURATION_SEC = 60;
+const socket = io("ws://localhost:3002");
 
 const VideoUploader = () => {
+  const { user } = useUser();
+  const [progress, setProgress] = useState(0);
+
   const [uploadState, setUploadState] = useState({
     video: null as File | null,
     videoURL: null as string | null,
     title: "",
     description: "",
     error: null as string | null,
-    progress: 0,
     uploading: false,
   });
 
-  const { video, videoURL, title, description, error, progress, uploading } =
-    uploadState;
+  const { video, videoURL, title, description, error, uploading } = uploadState;
 
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!user?.id) return;
+    const eventName = `uploadProgress-${user.id}`;
+    socket.on(eventName, (data) => {
+      if (data && data.progress) {
+        setProgress(data.progress);
+      }
+    });
+    console.log({ progress })
+    // Cleanup the socket connection when the component is unmounted
+    return () => {
+      socket.off(eventName);
+    };
+  }, [user?.id]);
+
 
   const validateFile = (file: File): string | null => {
     if (file.type !== "video/mp4") return "Only MP4 format is allowed.";
@@ -62,7 +81,6 @@ const VideoUploader = () => {
         title: "",
         description: "",
         error: null,
-        progress: 0,
         uploading: false,
       });
     };
@@ -91,7 +109,6 @@ const VideoUploader = () => {
       title: "",
       description: "",
       error: null,
-      progress: 0,
       uploading: false,
     });
   };
@@ -99,43 +116,30 @@ const VideoUploader = () => {
   const handleUpload = async () => {
     if (!video || !title || !description) return;
 
-    setUploadState((prev) => ({ ...prev, uploading: true, progress: 5 }));
+    setUploadState((prev) => ({ ...prev, uploading: true }));
 
     const formData = new FormData();
     formData.append("video", video);
     formData.append("data", JSON.stringify({ title, description }));
 
-    let progress = 5;
-    const interval = setInterval(() => {
-      progress += 1;
-      setUploadState((prev) => ({ ...prev, progress }));
-
-      if (progress >= 95) clearInterval(interval);
-    }, 300);
-
     try {
       const res = await uploadVideo(formData);
       console.log(res);
-      clearInterval(interval);
 
       if (res?.success) {
-        setUploadState((prev) => ({ ...prev, progress: 100 }));
+        setUploadState((prev) => ({ ...prev, uploading: false }));
         queryClient.invalidateQueries({ queryKey: ["video", "videos"] });
         toast.success(res.message);
-        setTimeout(() => {
-          setUploadState({
-            video: null,
-            videoURL: null,
-            title: "",
-            description: "",
-            error: null,
-            progress: 0,
-            uploading: false,
-          });
-        }, 500);
+        setUploadState({
+          video: null,
+          videoURL: null,
+          title: "",
+          description: "",
+          error: null,
+          uploading: false,
+        });
       }
     } catch (err: any) {
-      clearInterval(interval);
       console.error("Upload Error:", err.message);
       setUploadState((prev) => ({
         ...prev,
@@ -146,57 +150,56 @@ const VideoUploader = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto my-3">
-      <Card className="p-4 border rounded-lg bg-black text-white">
-        <Label htmlFor="video-upload" className="block text-lg font-semibold">
-          Upload Video
-        </Label>
-        <div
-          className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer h-72"
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={handleDrop}
-        >
-          {!video ? (
-            <label
-              htmlFor="video-upload"
-              className="flex flex-col items-center cursor-pointer"
-            >
-              <UploadCloud className="w-12 h-12 text-gray-500" />
-              <span className="mt-2 text-gray-500">
-                Drag & drop or click to upload
-              </span>
-            </label>
-          ) : (
-            <div className="relative w-full max-h-64">
-              <video className="rounded-lg w-full h-auto max-h-64" controls>
-                <source src={videoURL!} type="video/mp4" />
-              </video>
-              <button
-                className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
-                onClick={handleRemoveVideo}
+    <div className="container mx-auto">
+      <Label htmlFor="video-upload" className="block text-3xl font-semiboldmb-3 text-center my-3">
+        Upload Video
+      </Label>
+      <hr className="mb-3" />
+      <div className="my-3 flex justify-center gap-8">
+        <div className="w-48">
+          <div
+            className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer h-72"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={handleDrop}
+          >
+            {!video ? (
+              <label
+                htmlFor="video-upload"
+                className="flex flex-col items-center cursor-pointer text-center"
               >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-          )}
+                <Upload className="w-12 h-12 text-gray-500" />
+                <span className="mt-2 text-gray-500">
+                  Drag & drop or click to upload
+                </span>
+              </label>
+            ) : (
+              <div className="relative w-full max-h-64">
+                <video className="rounded-lg w-full h-auto max-h-64" controls>
+                  <source src={videoURL!} type="video/mp4" />
+                </video>
+                <button
+                  className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
+                  onClick={handleRemoveVideo}
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            )}
+          </div>
+          <Input
+            id="video-upload"
+            type="file"
+            className="hidden"
+            accept="video/mp4"
+            onChange={handleFileChange}
+          />
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </div>
-        <Input
-          id="video-upload"
-          type="file"
-          className="hidden"
-          accept="video/mp4"
-          onChange={handleFileChange}
-        />
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-      </Card>
 
-      {uploading && <Progress value={progress} className="h-3 mt-1" />}
-
-      {video && (
-        <Card className="p-4 mt-1 bg-black text-white">
+        <div className="w-96">
           <Input
             type="text"
-            placeholder="Enter video title..."
+            placeholder="Video Title"
             value={title}
             onChange={(e) =>
               setUploadState((prev) => ({ ...prev, title: e.target.value }))
@@ -204,7 +207,7 @@ const VideoUploader = () => {
             className="mt-2"
           />
           <Textarea
-            placeholder="Enter video description..."
+            placeholder="Video Description"
             value={description}
             onChange={(e: any) =>
               setUploadState((prev) => ({
@@ -214,16 +217,22 @@ const VideoUploader = () => {
             }
             className="mt-2"
           />
-        </Card>
-      )}
 
-      <Button
-        className="w-full mt-2"
-        disabled={!video || !title || uploading || !description}
-        onClick={handleUpload}
-      >
-        {uploading ? "Uploading..." : "Upload Video"}
-      </Button>
+          {uploading && <div className="text-center my-3">
+            <h3>Upload Progress: {progress.toFixed(2)}%</h3>
+            <progress value={progress} max={100} />
+          </div>
+          }
+
+          <Button
+            className="w-full mt-2"
+            disabled={!video || !title || uploading || !description}
+            onClick={handleUpload}
+          >
+            {uploading ? "Uploading..." : "Upload Video"}
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
