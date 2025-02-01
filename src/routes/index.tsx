@@ -4,6 +4,7 @@ import Home from "@/pages/Home";
 import Register from "@/pages/Register";
 import Login from "@/pages/Login";
 import ProfilePage from "@/pages/Profile";
+import UploadVideo from "@/pages/UploadVideo";
 
 const Routers = () => {
     return (
@@ -15,9 +16,13 @@ const Routers = () => {
                 <Route
                     path="/profile"
                     element={
-
                         <ProfilePage />
-
+                    }
+                />
+                <Route
+                    path="/video/upload"
+                    element={
+                        <UploadVideo />
                     }
                 />
             </Route>

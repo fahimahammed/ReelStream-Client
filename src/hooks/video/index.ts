@@ -8,7 +8,7 @@ export const useGetAllVideos = (page: number = 1, limit: number = 10) => {
   });
 };
 
-export const useReel = (videoId: string) => {
+export const useVideo = (videoId: string) => {
   return useQuery({
     queryKey: ["video", videoId],
     queryFn: () => getVideoById(videoId),

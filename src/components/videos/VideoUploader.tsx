@@ -7,7 +7,6 @@ import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { UploadCloud, X } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { uploadReel } from "@/services/reel.api";
 import { toast } from "sonner";
 import { uploadVideo } from "@/services/video.api";
 

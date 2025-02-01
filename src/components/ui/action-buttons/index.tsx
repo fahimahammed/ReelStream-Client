@@ -1,14 +1,14 @@
 import { useUser } from "@/hooks/user";
-import { likeUnlike } from "@/services/reel.api";
 import { useState } from "react";
 import { Button } from "../button";
 import { ArrowDown, ArrowUp, ThumbsUp } from "lucide-react";
 import { useNavigate } from "react-router";
-import { IReel } from "@/types";
+import { IVideo } from "@/types";
+import { likeUnlike } from "@/services/video.api";
 
 type TVideoProps = {
   data: {
-    video: IReel;
+    video: IVideo;
     prev: { id: string } | null;
     next: { id: string } | null;
   };
@@ -33,7 +33,7 @@ const ActionButtons = ({ data }: TVideoProps) => {
   const handleActionButtons = async (id: string | undefined) => {
     if (!id) return;
 
-    navigate(`/reels/${id}`, { replace: true });
+    navigate(`/videos/${id}`, { replace: true });
   };
 
   return (
