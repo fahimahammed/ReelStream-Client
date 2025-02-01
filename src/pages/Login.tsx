@@ -13,36 +13,36 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
-import { NavLink, useNavigate } from "react-router";
-import { registerValidationSchema } from "@/schema/register.validation";
+import { loginValidationSchema } from "@/schema/login.validation";
 import Logo from "@/assets/Logo";
-import { registerUser } from "@/services/auth.api";
+import { NavLink, useLocation, useNavigate } from "react-router";
+import { loginUser } from "@/services/auth.api";
+import { useUser } from "@/hooks/user";
 import regImage from "@/assets/reg.webp";
 
-export default function Register() {
+export default function Login() {
   const form = useForm({
-    resolver: zodResolver(registerValidationSchema),
+    resolver: zodResolver(loginValidationSchema),
   });
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const redirect_url = location.state?.from?.pathname || "/profile";
+
   const {
     formState: { isSubmitting },
   } = form || {};
 
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
-
-  const password = form.watch("password");
-  const passwordConfirm = form.watch("passwordConfirm");
+  const { setIsLoading } = useUser();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    delete data["passwordConfirm"];
     try {
-      const res = await registerUser(data);
-
-      if (res.success) {
+      const res = await loginUser(data);
+      setIsLoading(true);
+      if (res?.success) {
         toast.success(res.message);
-        navigate("/login");
-      } else {
-        toast.error(res.message);
+        navigate(redirect_url, { replace: true });
       }
     } catch (err: any) {
       console.error(err);
@@ -54,45 +54,17 @@ export default function Register() {
       <div>
         <img src={regImage} alt="Register Illustration" className="w-full h-auto" />
       </div>
-      <div className="border-2  rounded-xl flex-grow max-w-md w-full p-5 bg-background">
+      <div className="border-2 rounded-xl flex-grow max-w-md w-full p-5 bg-background">
         <div className="flex items-center space-x-2 mb-2">
-          <Logo width={100} fill="#fffff" />
+          <Logo width={50} fill="#fff" />
           <div>
-            <h1 className="text-xl font-semibold">Register</h1>
-            <p className="font-extralight text-sm text-white/60">
-              Become a part of the ReelStream community and explore endless reels!
-            </p>
+            <h1 className="text-xl font-semibold">Welcome Back to ReelStream!</h1>
+            <p className="font-extralight text-sm text-white/60">Log in to explore and stream endless reels.</p>
           </div>
         </div>
         <hr className="mb-4" />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormMessage className="text-red-500" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>User Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormMessage className="text-red-500" />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="email"
@@ -142,20 +114,15 @@ export default function Register() {
                 </FormItem>
               )}
             />
-
-            <Button
-              disabled={passwordConfirm && password !== passwordConfirm}
-              type="submit"
-              className="mt-5 w-full"
-            >
-              {isSubmitting ? "Processing....." : "Register"}
+            <Button type="submit" className="mt-5 w-full">
+              {isSubmitting ? "Processing..." : "Login"}
             </Button>
           </form>
         </Form>
         <p className="text-sm text-white/60 text-center my-3">
-          Already have an account?
-          <NavLink to="/login" className="text-primary ml-1">
-            Login
+          Don&apos;t have any account?
+          <NavLink to="/register" className="text-primary ml-1">
+            Register
           </NavLink>
         </p>
       </div>

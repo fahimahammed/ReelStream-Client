@@ -1,7 +1,26 @@
 const Logo: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
   return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
-      <path d="M13.34 4.13L20.26 16H4v-1C4 9.48 8.05 4.92 13.34 4.13zM33.26 16L22.57 16 15.57 4 26.26 4zM46 15v1H35.57l-7-12H35C41.08 4 46 8.92 46 15zM4 18v17c0 6.08 4.92 11 11 11h20c6.08 0 11-4.92 11-11V18H4zM31 32.19l-7.99 4.54C21.68 37.49 20 36.55 20 35.04v-9.08c0-1.51 1.68-2.45 3.01-1.69L31 28.81C32.33 29.56 32.33 31.44 31 32.19z" />
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 50 50"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      {/* Clapperboard Base */}
+      <rect x="5" y="15" width="40" height="28" rx="3" fill="black" stroke="white" strokeWidth="2" />
+
+      {/* Play Button */}
+      <polygon points="20,22 32,25 20,32" fill="white" />
+
+      {/* Clapperboard Top */}
+      <path d="M5 15 L45 15 L40 5 L10 5 Z" fill="black" stroke="white" strokeWidth="2" />
+
+      {/* Clapperboard Stripes */}
+      <line x1="10" y1="5" x2="17" y2="15" stroke="white" strokeWidth="2" />
+      <line x1="20" y1="5" x2="27" y2="15" stroke="white" strokeWidth="2" />
+      <line x1="30" y1="5" x2="37" y2="15" stroke="white" strokeWidth="2" />
     </svg>
   );
 };
