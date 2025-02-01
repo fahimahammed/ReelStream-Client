@@ -33,7 +33,7 @@ const VideoFeed = ({ videosData }: { videosData: IVideo[] }) => {
                   alt={videoInfo?.title}
                   className="w-full h-auto rounded-lg object-cover"
                 />
-                {/* Title Overlay */}
+
                 <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-60 text-white text-sm font-semibold p-2 text-center rounded-b-lg flex justify-between items-center px-3">
                   <span className="truncate">{videoInfo?.title}</span>
                   <div className="flex items-center gap-3">
