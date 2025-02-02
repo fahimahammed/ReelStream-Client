@@ -36,22 +36,29 @@ Ensure you have the following installed on your system:
    cd ReelStream-Client
    ```
 
+
 2. **Install dependencies**
    ```sh
    yarn install  # or npm install
    ```
 
-3. **Start the development server**
+3. **Copy environment variables**
+   ```sh
+   cp .env.example .env  # or cp .env.example .env.local
+   ```
+   Configure the `.env` or `.env.local` file with the necessary API keys and configurations.
+
+4. **Start the development server**
    ```sh
    yarn dev  # Runs on http://localhost:3001
    ```
 
-4. **Build for production**
+5. **Build for production**
    ```sh
    yarn build
    ```
 
-5. **Preview production build**
+6. **Preview production build**
    ```sh
    yarn preview
    ```
