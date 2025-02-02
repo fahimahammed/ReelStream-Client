@@ -50,6 +50,10 @@ const Analytics = () => {
 
   return (
     <div className="my-5">
+      <div className="bg-orange-700 p-2 rounded-md mb-3">
+        <p className="text-white text-sm font-medium">Data updates every 3 minutes.</p>
+      </div>
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-5">
         {stats.map((stat, index) => (

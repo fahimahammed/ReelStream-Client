@@ -11,12 +11,15 @@ type TVideoProps = {
     video: IVideo;
     prev: { id: string } | null;
     next: { id: string } | null;
+    isLiked: boolean;
   };
 };
 
 const ActionButtons = ({ data }: TVideoProps) => {
+
+  // console.log("----------->>>>> data.liked: ", data.isLiked)
   const { user } = useUser();
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(data.isLiked);
   const [likeCount, setLikeCount] = useState(data?.video?.likeCount || 0)
   const navigate = useNavigate();
 
@@ -24,7 +27,8 @@ const ActionButtons = ({ data }: TVideoProps) => {
     try {
       const res = await likeUnlike(data?.video?.id);
       if (res) {
-        setLiked(!liked);
+        console.log(res, "=== res")
+        setLiked(data.isLiked);
         setLikeCount(res.data.likeCount)
       }
 

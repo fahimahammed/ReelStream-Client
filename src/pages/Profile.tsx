@@ -37,7 +37,7 @@ const ProfilePage = () => {
         <TabsContent value="videos">
           <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-6 my-5 px-4 sm:px-4 md:px-0 lg:px-0">
             {profile.videos.map((video: IVideo) => (
-              <NavLink to={`/videos/${video?.id}`} key={profile.videos?.id}>
+              <NavLink to={`/video/${video?.id}`} key={profile.videos?.id}>
                 <VideoPlayer videoInfo={video} />
               </NavLink>
             ))}
