@@ -8,11 +8,11 @@ import VideoPlayer from "@/components/videos/VideoPlayer";
 
 const Video = () => {
   const { videoId } = useParams();
-  console.log("---------->>", videoId)
+  //console.log("---------->>", videoId)
   const queryClient = useQueryClient();
 
   const { data, isLoading, refetch } = useVideo(videoId!);
-  console.log({ data })
+  // console.log({ data })
 
   useEffect(() => {
     if (videoId) {

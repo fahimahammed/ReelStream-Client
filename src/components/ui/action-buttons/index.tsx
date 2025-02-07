@@ -17,7 +17,7 @@ type TVideoProps = {
 
 const ActionButtons = ({ data }: TVideoProps) => {
 
-  // console.log("----------->>>>> data.liked: ", data.isLiked)
+  console.log("----------->>>>> data.liked: ", data)
   const { user } = useUser();
   const [liked, setLiked] = useState(data.isLiked);
   const [likeCount, setLikeCount] = useState(data?.video?.likeCount || 0)
@@ -27,8 +27,7 @@ const ActionButtons = ({ data }: TVideoProps) => {
     try {
       const res = await likeUnlike(data?.video?.id);
       if (res) {
-        console.log(res, "=== res")
-        setLiked(data.isLiked);
+        setLiked(res.data.likeStatus);
         setLikeCount(res.data.likeCount)
       }
 

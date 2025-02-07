@@ -45,9 +45,15 @@ export const getAllVideos = async (page: number = 1, limit: number = 10) => {
 
 // get single Video by id
 export const getVideoById = async (VideoId: string) => {
+  const accessToken = localStorage.getItem("accessToken");
   try {
     const res = await axios.get(
-      `${import.meta.env.VITE_BASE_API}/video/${VideoId}`
+      `${import.meta.env.VITE_BASE_API}/video/${VideoId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     );
     return res.data;
   } catch (error: any) {
